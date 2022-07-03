@@ -120,14 +120,14 @@ def simulation(n, centerX, centerY, centerZ, porosity):
     os.system("mv WOPR:PROD.txt ../Output/oleo/"+str(n)+".txt")
     os.system("mv WWPR:PROD.txt ../Output/agua/"+str(n)+".txt")
     os.system("mv WGPR:PROD.txt ../Output/gas/"+str(n)+".txt")
-    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.DATA.DBG")
-    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.DATA.EGRID")
-    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.DATA.INFOSTEP")
-    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.DATA.INIT")
-    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.DATA.PRT")
-    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.DATA.SMSPEC")
-    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.DATA.UNRST")
-    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.DATA.UNSMRY")
+    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.DBG")
+    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.EGRID")
+    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.INFOSTEP")
+    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.INIT")
+    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.PRT")
+    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.SMSPEC")
+    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.UNRST")
+    os.system("rm ../Output/"+str(n)+"-SPE1CASE1.UNSMRY")
 
 def objeticve_funcion(n):
     water_result = []
