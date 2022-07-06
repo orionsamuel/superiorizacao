@@ -26,6 +26,7 @@ class tabu_search: public functions{
     public:
     void Init();
     void FirstSimulation();
+    void OthersSimulations(int idIterations);
     void Fitness(int idIteration);
     void GetNeighbors(individual bestCandidate);
 
