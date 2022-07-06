@@ -12,21 +12,21 @@ void tabu_search::FirstSimulation(){
 
     for(int i = 0; i < HEIGHT; i++){
         for(int j = 0; j < WIDTH; j++){
-            this->sBest.porosity[HEIGHT][WIDTH] = porosity;
-            for(int k = 0; k < 3; k++){
-                this->sBest.permeability[HEIGHT][WIDTH].permeability_1 = permeability_1;
-                this->sBest.permeability[HEIGHT][WIDTH].permeability_2 = permeability_2;
-                this->sBest.permeability[HEIGHT][WIDTH].permeability_3 = permeability_3;
-            }
+            this->sBest.porosity[i][j] = porosity;
+            this->sBest.permeability[i][j].permeability_1 = permeability_1;
+            this->sBest.permeability[i][j].permeability_2 = permeability_2;
+            this->sBest.permeability[i][j].permeability_3 = permeability_3;
         }
     }
+
+    this->tabuList.push(sBest);
 
     this->bestCandidate = sBest;
 
     WriteSimulationFile(0, 0, simulationFile, fileName, sBest);
 
-    Simulation(0, fileName);
-    Fitness(0);
+    //Simulation(0, fileName);
+   // Fitness(0);
 }
 
 void tabu_search::Fitness(int idIteration){
@@ -54,17 +54,6 @@ void tabu_search::Init(){
 
     this->realResults = ConvertStringInputToDoubleResult(waterInputResult, oilInputResult, gasInputResult); 
 
-    FirstSimulation(); 
-
-    // for(int i = 0; i < HEIGHT; i++){
-    //     for(int j = 0; j < WIDTH; j++){
-    //         cout << this->bestCandidate.porosity[HEIGHT][WIDTH] << endl;
-    //         for(int k = 0; k < 3; k++){
-    //             cout << this->bestCandidate.permeability[HEIGHT][WIDTH].permeability_1 << endl;
-    //             cout << this->bestCandidate.permeability[HEIGHT][WIDTH].permeability_2 << endl;
-    //             cout << this->bestCandidate.permeability[HEIGHT][WIDTH].permeability_3 << endl;
-    //         }
-    //     }
-    // }
+    FirstSimulation();
 
 }

@@ -28,6 +28,7 @@ const string fileName = "SPE1CASE1";
 #define HEIGHT 30
 #define WIDTH 10
 #define SIZE 30
+#define TABU_SIZE 50
 
 struct perm{
     double permeability_1;
