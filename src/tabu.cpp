@@ -55,5 +55,9 @@ void tabu_search::Init(){
     this->realResults = ConvertStringInputToDoubleResult(waterInputResult, oilInputResult, gasInputResult); 
 
     FirstSimulation();
+    int count = 1;
+    while(count <= N_ITERATIONS or this->tabuList.back().error_rank > STOP){
+        
+    }
 
 }
