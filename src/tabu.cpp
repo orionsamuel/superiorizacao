@@ -25,8 +25,8 @@ void tabu_search::FirstSimulation(){
 
     WriteSimulationFile(0, 0, simulationFile, fileName, sBest);
 
-    //Simulation(0, fileName);
-   // Fitness(0);
+    Simulation(0, fileName);
+    Fitness(0);
 }
 
 void tabu_search::Fitness(int idIteration){
