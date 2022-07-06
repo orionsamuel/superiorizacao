@@ -1,10 +1,10 @@
 #include <iostream>
-#include "../include/genetic.hpp"
+#include "../include/tabu.hpp"
 
 int main(){
-    genetic_algorithm ga;
+    tabu_search ts;
     
-    ga.Init();
+    ts.Init();
 
     cout << "Finish" << endl;
 

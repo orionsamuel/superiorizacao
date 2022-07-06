@@ -1,6 +1,6 @@
 #include "tabu.hpp"
 
-void tabu_search::firstSimulation(){
+void tabu_search::FirstSimulation(){
     srand((unsigned)time(0));
 
     CreateResultDir(0);
@@ -24,9 +24,28 @@ void tabu_search::firstSimulation(){
     this->bestCandidate = sBest;
 
     WriteSimulationFile(0, 0, simulationFile, fileName, sBest);
+
+    Simulation(0, fileName);
+    Fitness(0);
 }
 
-void tabu_search::init(){
+void tabu_search::Fitness(int idIteration){
+    if(idIteration == 0){
+        string oilOutputResult = "../Output/"+to_string(idIteration)+"/oleo/"+to_string(0)+".txt";
+            string waterOutputResult = "../Output/"+to_string(idIteration)+"/agua/"+to_string(0)+".txt";
+            string gasOutputResult = "../Output/"+to_string(idIteration)+"/gas/"+to_string(0)+".txt";
+            this->sBest.error_rank = activationFunction(waterOutputResult, oilOutputResult, gasOutputResult, realResults, idIteration, 0);
+    }else{
+        for(int i = 0; i < SIZE; i++){
+            string oilOutputResult = "../Output/"+to_string(idIteration)+"/oleo/"+to_string(i)+".txt";
+            string waterOutputResult = "../Output/"+to_string(idIteration)+"/agua/"+to_string(i)+".txt";
+            string gasOutputResult = "../Output/"+to_string(idIteration)+"/gas/"+to_string(i)+".txt";
+            this->sNeighborhood[i].error_rank = activationFunction(waterOutputResult, oilOutputResult, gasOutputResult, realResults, idIteration, i);
+        }
+    }
+}
+
+void tabu_search::Init(){
     CreateOutputDir();
 
     string oilInputResult = ReadFileInput(inputOil);
@@ -35,15 +54,15 @@ void tabu_search::init(){
 
     this->realResults = ConvertStringInputToDoubleResult(waterInputResult, oilInputResult, gasInputResult); 
 
-    firstSimulation(); 
+    FirstSimulation(); 
 
     // for(int i = 0; i < HEIGHT; i++){
     //     for(int j = 0; j < WIDTH; j++){
-    //         cout << this->sBest.porosity[HEIGHT][WIDTH] << endl;
+    //         cout << this->bestCandidate.porosity[HEIGHT][WIDTH] << endl;
     //         for(int k = 0; k < 3; k++){
-    //             cout << this->sBest.permeability[HEIGHT][WIDTH].permeability_1 << endl;
-    //             cout << this->sBest.permeability[HEIGHT][WIDTH].permeability_2 << endl;
-    //             cout << this->sBest.permeability[HEIGHT][WIDTH].permeability_3 << endl;
+    //             cout << this->bestCandidate.permeability[HEIGHT][WIDTH].permeability_1 << endl;
+    //             cout << this->bestCandidate.permeability[HEIGHT][WIDTH].permeability_2 << endl;
+    //             cout << this->bestCandidate.permeability[HEIGHT][WIDTH].permeability_3 << endl;
     //         }
     //     }
     // }

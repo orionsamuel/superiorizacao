@@ -24,7 +24,9 @@ class tabu_search: public functions{
     vector<result> realResults;
 
     public:
-    void init();
-    void getNeighbors(individual bestCandidate);
+    void Init();
+    void FirstSimulation();
+    void Fitness(int idIteration);
+    void GetNeighbors(individual bestCandidate);
 
 };
