@@ -23,9 +23,8 @@ class functions{
     vector<result> ConvertStringInputToDoubleResult(string water, string oil, string gas);
     const char* Command(string inputCommand);
     void CreateResultDir(int idIteration);
-    void WriteSimulationFile(int idIteration, int interator, string inputFile, string file, vector<individual> population);
+    void WriteSimulationFile(int idIteration, int interator, string inputFile, string file, individual simulationFile);
     void WriteErrorFile(int idIteration, vector<individual> population);
-    mutationValue RandMutationValue(individual children, int gene, bool soma);
     double activationFunction(string waterResult, string oilResult, string gasResult, vector<result> results, int idIteration, int iterator);
 
     static bool Compare(const individual n, const individual m){

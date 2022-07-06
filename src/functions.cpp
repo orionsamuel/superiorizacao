@@ -4,7 +4,7 @@ void functions::Simulation(int idIteration, string file){
     system(Command("cp ../summaryplot.py ../Output/"+to_string(idIteration)));
 
     if(idIteration == 0){
-        for(int i = 0; i < SIZE_POPULATION; i++){
+        for(int i = 0; i < 1; i++){
             cout << "Executando a simulação no indivíduo " << i << " da iteração " << idIteration << endl;
             system(Command("mpirun -np 4 flow ../Output/"+to_string(idIteration)+"/"+to_string(i)+"-"+file+".DATA >> out.txt"));
             system(Command("python3 ../Output/"+to_string(idIteration)+"/summaryplot.py WOPR:PROD WWPR:PROD WGPR:PROD ../Output/"+to_string(idIteration)+"/"+to_string(i)+"-"+file+".DATA >> out.txt"));
@@ -21,7 +21,7 @@ void functions::Simulation(int idIteration, string file){
             system(Command("rm ../Output/"+to_string(idIteration)+"/"+to_string(i)+"-"+file+".UNSMRY"));
         }
     }else{
-        for(int i = SIZE_POPULATION; i < (SIZE_POPULATION + ((SIZE_POPULATION * CROSSOVER_RATE) / 100)); i++){
+        for(int i = 0; i < SIZE; i++){
             cout << "Executando a simulação no indivíduo " << i << " da iteração " << idIteration << endl;
             system(Command("mpirun -np 4 flow ../Output/"+to_string(idIteration)+"/"+to_string(i)+"-"+file+".DATA >> out.txt"));
             system(Command("python3 ../Output/"+to_string(idIteration)+"/summaryplot.py WOPR:PROD WWPR:PROD WGPR:PROD ../Output/"+to_string(idIteration)+"/"+to_string(i)+"-"+file+".DATA >> out.txt"));
@@ -151,7 +151,7 @@ void functions::CreateResultDir(int idIteration){
 
 }
 
-void functions::WriteSimulationFile(int idIteration, int iterator, string inputFile, string file, vector<individual> population){
+void functions::WriteSimulationFile(int idIteration, int iterator, string inputFile, string file, individual simulationFile){
     ifstream input(inputFile, ios::in);
     ofstream output("../Output/"+to_string(idIteration)+"/"+to_string(iterator)+"-"+file+".DATA", ios::out);
     string line;
@@ -160,13 +160,13 @@ void functions::WriteSimulationFile(int idIteration, int iterator, string inputF
     while(!input.eof()){
         getline(input, line);
         if(count == 92){
-            output << "    " << TOTAL_CELLS << "*" << population[iterator].porosity << " /"  << endl;
+            output << "    " << TOTAL_CELLS << "*" << simulationFile.porosity[0][0] << " /"  << endl;
         }else if(count == 96){
-            output << "    " << "100*" << population[iterator].permeability_x[0] << " 100*" << population[iterator].permeability_x[1] << " 100*" << population[iterator].permeability_x[2] << " /" << endl;
+            output << "    " << "100*" << simulationFile.permeability[0][0].permeability_1 << " 100*" << simulationFile.permeability[0][0].permeability_2 << " 100*" << simulationFile.permeability[0][0].permeability_3 << " /" << endl;
         }else if(count == 100){
-            output << "    " << "100*" << population[iterator].permeability_y[0] << " 100*" << population[iterator].permeability_y[1] << " 100*" << population[iterator].permeability_y[2] << " /"  << endl;
+            output << "    " << "100*" << simulationFile.permeability[0][0].permeability_1 << " 100*" << simulationFile.permeability[0][0].permeability_2 << " 100*" << simulationFile.permeability[0][0].permeability_3 << " /"  << endl;
         }else if(count == 105){
-            output << "    " << "100*" << population[iterator].permeability_z[0] << " 100*" << population [iterator].permeability_z[1] << " 100*" << population[iterator].permeability_z[2] << " /"  << endl;
+            output << "    " << "100*" << simulationFile.permeability[0][0].permeability_1 << " 100*" << simulationFile.permeability[0][0].permeability_2 << " 100*" << simulationFile.permeability[0][0].permeability_3 << " /"  << endl;
         }else{
             output << line << endl;
         }
@@ -182,36 +182,11 @@ void functions::WriteSimulationFile(int idIteration, int iterator, string inputF
 void functions::WriteErrorFile(int idIteration, vector<individual> population){
     ofstream errorFile("../Output/"+to_string(idIteration)+"/error.txt", ios::out);
     
-    for(int i = 0; i < SIZE_POPULATION; i++){
+    for(int i = 0; i < SIZE; i++){
         errorFile << population[i].error_rank << endl;
     }
 
     errorFile.close();
-}
-
-mutationValue functions::RandMutationValue(individual children, int gene, bool soma){
-    mutationValue newValue;
-
-    int percent = rand() % (20-5+1) + 5;
-
-    newValue.porosity = (children.porosity * percent / 100);
-    newValue.permeability_x = (children.permeability_x[gene] * percent / 100);
-    newValue.permeability_y = (children.permeability_y[gene] * percent / 100);
-    newValue.permeability_z = (children.permeability_z[gene] * percent / 100);
-
-    if(soma){
-        newValue.porosity = min(MAX_POROSITY, (children.porosity + newValue.porosity));
-        newValue.permeability_x = min(MAX_PERMEABILITY, (children.permeability_x[gene] + newValue.permeability_x));
-        newValue.permeability_y = min(MAX_PERMEABILITY, (children.permeability_y[gene] + newValue.permeability_y));
-        newValue.permeability_z = min(MAX_PERMEABILITY, (children.permeability_z[gene] + newValue.permeability_z));
-    }else{
-        newValue.porosity = max(MIN_POROSITY, (children.porosity - newValue.porosity));
-        newValue.permeability_x = max(MIN_PERMEABILITY, (children.permeability_x[gene] - newValue.permeability_x));
-        newValue.permeability_y = max(MIN_PERMEABILITY, (children.permeability_y[gene] - newValue.permeability_y));
-        newValue.permeability_z = max(MIN_PERMEABILITY, (children.permeability_z[gene] - newValue.permeability_z));
-    }
-
-    return newValue;
 }
 
 double functions::activationFunction(string waterOutputResult, string oilOutputResult, string gasOutputResult, vector<result> results, int idIteration, int iterator){

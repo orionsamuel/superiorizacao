@@ -8,9 +8,8 @@ const string inputGas = "../Input/gas.txt";
 const string simulationFile = "../Input/SPE1CASE1.DATA";
 const string fileName = "SPE1CASE1";
 
-#define N_ITERATIONS 10
-
-#define LEARNING_RATE 0.1
+#define N_ITERATIONS 100
+#define STOP 40
 
 #define MIN_POROSITY 0.1
 #define MAX_POROSITY 0.3
@@ -26,8 +25,9 @@ const string fileName = "SPE1CASE1";
 
 #define N_METRICS 3
 
-#define HEIGHT 10
-#define WIDTH 30
+#define HEIGHT 30
+#define WIDTH 10
+#define SIZE 30
 
 struct perm{
     double permeability_1;
@@ -36,8 +36,8 @@ struct perm{
 };
 
 struct individual{
-    double porosity[WIDTH][HEIGHT];
-    perm permeability[WIDTH][HEIGHT];
+    double porosity[HEIGHT][WIDTH];
+    perm permeability[HEIGHT][WIDTH];
     double error_rank;
 };
 
