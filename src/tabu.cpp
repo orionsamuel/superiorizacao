@@ -24,8 +24,6 @@ void tabu_search::FirstSimulation(){
     Simulation(0, 1, fileName);
     sBest.error_rank = Fitness(0, 0, this->sBest);
 
-    cout << sBest.error_rank << endl;
-
     WriteErrorFile(0, this->sBest);
 
     this->tabuList.push_back(sBest);
@@ -80,30 +78,30 @@ double tabu_search::Fitness(int idIteration, int iterator, individual sCandidate
 
 void tabu_search::GetNeighbors(individual bestCandidate){
     for(int i = 0; i < SIZE; i++){
-        if(i <= (SIZE / 2)){
-            double porosity = Rand_double(bestCandidate.porosity[0][0], MAX_POROSITY);
-            double permeability_1 = Rand_double(bestCandidate.permeability[0][0].permeability_1, MAX_PERMEABILITY);
-            double permeability_2 = Rand_double(bestCandidate.permeability[0][0].permeability_2, MAX_PERMEABILITY);
-            double permeability_3 = Rand_double(bestCandidate.permeability[0][0].permeability_3, MAX_PERMEABILITY);
-            for(int j = 0; j < HEIGHT; i++){
-                for(int k = 0; k < WIDTH; j++){
-                    this->sNeighborhood[i].porosity[j][k] = porosity;
-                    this->sNeighborhood[i].permeability[j][k].permeability_1 = permeability_1;
-                    this->sNeighborhood[i].permeability[j][k].permeability_2 = permeability_2;
-                    this->sNeighborhood[i].permeability[j][k].permeability_3 = permeability_3;
+        if(i < (SIZE / 2)){
+            double porosity = Rand_double(bestCandidate.porosity[0][0], bestCandidate.porosity[0][0]+0.03);
+            double permeability_1 = Rand_double(bestCandidate.permeability[0][0].permeability_1, bestCandidate.permeability[0][0].permeability_1+20);
+            double permeability_2 = Rand_double(bestCandidate.permeability[0][0].permeability_2, bestCandidate.permeability[0][0].permeability_2+20);
+            double permeability_3 = Rand_double(bestCandidate.permeability[0][0].permeability_3, bestCandidate.permeability[0][0].permeability_2+20);
+            for(int j = 0; j < HEIGHT; j++){
+                for(int k = 0; k < WIDTH; k++){
+                    this->sNeighborhood[i].porosity[j][k] = Min(porosity, MAX_POROSITY);
+                    this->sNeighborhood[i].permeability[j][k].permeability_1 = Min(permeability_1, MAX_PERMEABILITY);
+                    this->sNeighborhood[i].permeability[j][k].permeability_2 = Min(permeability_2, MAX_PERMEABILITY);
+                    this->sNeighborhood[i].permeability[j][k].permeability_3 = Min(permeability_3, MAX_PERMEABILITY);
                 }
             }
         }else{
-            double porosity = Rand_double(MIN_POROSITY, bestCandidate.porosity[0][0]);
-            double permeability_1 = Rand_double(MIN_PERMEABILITY, bestCandidate.permeability[0][0].permeability_1);
-            double permeability_2 = Rand_double(MIN_PERMEABILITY, bestCandidate.permeability[0][0].permeability_2);
-            double permeability_3 = Rand_double(MIN_PERMEABILITY, bestCandidate.permeability[0][0].permeability_3);
-            for(int j = 0; j < HEIGHT; i++){
-                for(int k = 0; k < WIDTH; j++){
-                    this->sNeighborhood[i].porosity[j][k] = porosity;
-                    this->sNeighborhood[i].permeability[j][k].permeability_1 = permeability_1;
-                    this->sNeighborhood[i].permeability[j][k].permeability_2 = permeability_2;
-                    this->sNeighborhood[i].permeability[j][k].permeability_3 = permeability_3;
+            double porosity = Rand_double(bestCandidate.porosity[0][0]-0.03, bestCandidate.porosity[0][0]);
+            double permeability_1 = Rand_double(bestCandidate.permeability[0][0].permeability_1-20, bestCandidate.permeability[0][0].permeability_1);
+            double permeability_2 = Rand_double(bestCandidate.permeability[0][0].permeability_2-20, bestCandidate.permeability[0][0].permeability_2);
+            double permeability_3 = Rand_double(bestCandidate.permeability[0][0].permeability_3-20, bestCandidate.permeability[0][0].permeability_3);
+            for(int j = 0; j < HEIGHT; j++){
+                for(int k = 0; k < WIDTH; k++){
+                    this->sNeighborhood[i].porosity[j][k] = Max(porosity, MIN_POROSITY);
+                    this->sNeighborhood[i].permeability[j][k].permeability_1 = Max(permeability_1, MIN_PERMEABILITY);
+                    this->sNeighborhood[i].permeability[j][k].permeability_2 = Max(permeability_2, MIN_PERMEABILITY);
+                    this->sNeighborhood[i].permeability[j][k].permeability_3 = Max(permeability_3, MIN_PERMEABILITY);
                 }
             }
         }
@@ -165,6 +163,7 @@ void tabu_search::Init(){
     int count = 1;
     while(count <= N_ITERATIONS or this->sBest.error_rank > STOP){
         OthersSimulations(count);
+        count ++;
     }
 
     SaveTabuList();

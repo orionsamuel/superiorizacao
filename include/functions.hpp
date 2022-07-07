@@ -15,6 +15,8 @@ class functions{
 
     void Simulation(int idIteration, int size, string file);
     double Rand_double(double min, double max);
+    double Max(double num1, double num2);
+    double Min(double num1, double num2);
     const vector<string> split(const string& s, const char& c);
     void CreateOutputDir();
     string ReadFileInput(string file);

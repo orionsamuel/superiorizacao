@@ -35,6 +35,22 @@ double functions::Rand_double(double min, double max){
     return num;
 }
 
+double functions::Max(double num1, double num2){
+    if(num1 > num2){
+        return num1;
+    }else{
+        return num2;
+    }
+}
+
+double functions::Min(double num1, double num2){
+    if(num1 < num2){
+        return num1;
+    }else{
+        return num2;
+    }
+}
+
 const vector<string> functions::split(const string& s, const char& c){
     string buff{""};
 	vector<string> v;
