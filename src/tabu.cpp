@@ -152,6 +152,30 @@ void tabu_search::SaveBest(){
     WriteErrorFile(N_ITERATIONS+2, this->sBest);
 }
 
+void tabu_search::Superiorization(individual image){
+    int n = 0;
+    while (n < SUPERIOZATION_SIZE){
+        bool loop = true;
+        while(loop){
+            this->l = this->l + 1;
+            double beta = pow(a, l);
+            individual nextImage;
+
+            for(int i = 0; i < HEIGHT; i++){
+                for(int j = 0; j < WIDTH; j++){
+                    nextImage.porosity[i][j] = Min(image.porosity[i][j] + beta * suavityImage[i][j], MAX_POROSITY);
+                    nextImage.permeability[i][j].permeability_1 = Min(image.permeability[i][j].permeability_1 + beta * suavityImage[i][j], MAX_PERMEABILITY);
+                    nextImage.permeability[i][j].permeability_2 = Min(image.permeability[i][j].permeability_2 + beta * suavityImage[i][j], MAX_PERMEABILITY);
+                    nextImage.permeability[i][j].permeability_3 = Min(image.permeability[i][j].permeability_3 + beta * suavityImage[i][j], MAX_PERMEABILITY);
+                }
+            }
+
+            nextImage.error_rank = image.error_rank;
+        }
+    }
+    
+}
+
 void tabu_search::Init(){
     CreateOutputDir();
 
@@ -160,6 +184,12 @@ void tabu_search::Init(){
     string gasInputResult = ReadFileInput(inputGas);
 
     this->realResults = ConvertStringInputToDoubleResult(waterInputResult, oilInputResult, gasInputResult); 
+
+    for(int i = 0; i < HEIGHT; i++){
+        for(int j = 0; j < WIDTH; j++){
+            this->suavityImage[i][j] = 5;
+        }
+    }
 
     FirstSimulation();
     int count = 1;
