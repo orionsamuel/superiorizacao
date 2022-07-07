@@ -17,10 +17,10 @@ def simulation(n):
 
 
     os.system("rm -f output_simulation")
-    os.system("cp ../src/summaryplot.py Output_Simulation/")
+    os.system("cp ../summaryplot.py Output_Simulation/")
     for i in range(n):
         print("Executando a simulação: "+str(i))
-        os.system("cp ../Output/"+str(i)+"-SPE1CASE1.DATA "
+        os.system("cp ../Output/"+str(n)+"/"+str(i)+"-SPE1CASE1.DATA "
                   +"Output_Simulation/")
         os.system("mpirun -np 4 flow Output_Simulation/"+str(i)+
                   "-SPE1CASE1.DATA")
@@ -45,7 +45,7 @@ def simulation(n):
 
 
 if __name__ == '__main__':
-    init(10)
+    init(11)
 
 
 
