@@ -152,7 +152,7 @@ void functions::WriteErrorFile(int idIteration, individual sCandidate){
     errorFile.close();
 }
 
-double functions::activationFunction(string waterOutputResult, string oilOutputResult, string gasOutputResult, vector<result> results, int idIteration, int iterator){
+double functions::activationFunction(string waterOutputResult, string oilOutputResult, string gasOutputResult, vector<result> results, int idIteration){
     double rank;
 
     string waterResult = ReadFileInput(waterOutputResult);

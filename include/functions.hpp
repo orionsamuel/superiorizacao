@@ -23,6 +23,6 @@ class functions{
     void CreateResultDir(int idIteration);
     void WriteSimulationFile(int idIteration, int interator, string inputFile, string file, individual sCandidate);
     void WriteErrorFile(int idIteration, individual sCandidate);
-    double activationFunction(string waterResult, string oilResult, string gasResult, vector<result> results, int idIteration, int iterator);
+    double activationFunction(string waterResult, string oilResult, string gasResult, vector<result> results, int idIteration);
 
 };

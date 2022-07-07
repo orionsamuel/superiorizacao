@@ -27,7 +27,7 @@ class tabu_search: public functions{
     void Init();
     void FirstSimulation();
     void OthersSimulations(int idIterations);
-    void Fitness(int idIteration, int size);
+    double Fitness(int idIteration, int iterator, individual sCandidate);
     void GetNeighbors(individual bestCandidate);
     bool Contains(individual sCandidate);
     void SaveTabuList();

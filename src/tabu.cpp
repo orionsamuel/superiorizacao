@@ -20,9 +20,11 @@ void tabu_search::FirstSimulation(){
     }
 
     WriteSimulationFile(0, 0, simulationFile, fileName, this->sBest);
+    
+    Simulation(0, 1, fileName);
+    sBest.error_rank = Fitness(0, 0, this->sBest);
 
-    Simulation(0, 0, fileName);
-    Fitness(0, 1);
+    cout << sBest.error_rank << endl;
 
     WriteErrorFile(0, this->sBest);
 
@@ -41,7 +43,9 @@ void tabu_search::OthersSimulations(int idIteration){
     }
 
     Simulation(idIteration, SIZE, fileName);
-    Fitness(idIteration, SIZE);
+    for(int i = 0; i < SIZE; i++){
+        this->sNeighborhood[i].error_rank = Fitness(idIteration, i, this->sNeighborhood[i]);
+    }
 
     for(int i = 0; i < SIZE; i++){
         WriteErrorFile(idIteration, this->sNeighborhood[i]);
@@ -65,13 +69,13 @@ void tabu_search::OthersSimulations(int idIteration){
 
 }
 
-void tabu_search::Fitness(int idIteration, int size){
-    for(int i = 0; i < size; i++){
-        string oilOutputResult = "../Output/"+to_string(idIteration)+"/oleo/"+to_string(i)+".txt";
-        string waterOutputResult = "../Output/"+to_string(idIteration)+"/agua/"+to_string(i)+".txt";
-        string gasOutputResult = "../Output/"+to_string(idIteration)+"/gas/"+to_string(i)+".txt";
-        this->sNeighborhood[i].error_rank = activationFunction(waterOutputResult, oilOutputResult, gasOutputResult, realResults, idIteration, i);
-    }
+double tabu_search::Fitness(int idIteration, int iterator, individual sCandidate){
+    string oilOutputResult = "../Output/"+to_string(idIteration)+"/oleo/"+to_string(iterator)+".txt";
+    string waterOutputResult = "../Output/"+to_string(idIteration)+"/agua/"+to_string(iterator)+".txt";
+    string gasOutputResult = "../Output/"+to_string(idIteration)+"/gas/"+to_string(iterator)+".txt";
+    double error = activationFunction(waterOutputResult, oilOutputResult, gasOutputResult, realResults, idIteration);
+    
+    return error;
 }
 
 void tabu_search::GetNeighbors(individual bestCandidate){
@@ -123,14 +127,16 @@ bool tabu_search::Contains(individual sCandidate){
 void tabu_search::SaveTabuList(){
     CreateResultDir(N_ITERATIONS+1);
 
-    for(int i = 0; i < TABU_SIZE; i++){
+    for(int i = 0; i < tabuList.size(); i++){
         WriteSimulationFile(N_ITERATIONS+1, i, simulationFile, fileName, this->tabuList[i]);
     }
 
-    Simulation(N_ITERATIONS+1, TABU_SIZE, fileName);
-    Fitness(N_ITERATIONS+1, TABU_SIZE);
+    Simulation(N_ITERATIONS+1, this->tabuList.size(), fileName);
+    for(int i = 0; i < tabuList.size(); i++){
+        this->tabuList[i].error_rank = Fitness(N_ITERATIONS+1, i, this->tabuList[i]);
+    }
 
-    for(int i = 0; i < TABU_SIZE; i++){
+    for(int i = 0; i < tabuList.size(); i++){
         WriteErrorFile(N_ITERATIONS+1, this->tabuList[i]);
     }
 }
@@ -141,7 +147,7 @@ void tabu_search::SaveBest(){
     WriteSimulationFile(N_ITERATIONS+2, 0, simulationFile, fileName, this->sBest);
 
     Simulation(N_ITERATIONS+2, 1, fileName);
-    Fitness(N_ITERATIONS+2, 1);
+    sBest.error_rank = Fitness(N_ITERATIONS+2, 0, this->sBest);
 
     WriteErrorFile(N_ITERATIONS+2, this->sBest);
 }
