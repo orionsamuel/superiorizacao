@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
-#include <queue>
+#include <vector>
 #include "functions.hpp"
 
 using namespace std;
@@ -19,7 +19,7 @@ class tabu_search: public functions{
     int suavityImage[HEIGHT][WIDTH];
     individual sBest;
     individual bestCandidate;
-    queue<individual> tabuList;
+    vector<individual> tabuList;
     individual sNeighborhood[SIZE];
     vector<result> realResults;
 
@@ -27,7 +27,10 @@ class tabu_search: public functions{
     void Init();
     void FirstSimulation();
     void OthersSimulations(int idIterations);
-    void Fitness(int idIteration);
+    void Fitness(int idIteration, int size);
     void GetNeighbors(individual bestCandidate);
+    bool Contains(individual sCandidate);
+    void SaveTabuList();
+    void SaveBest();
 
 };
