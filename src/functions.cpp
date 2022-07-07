@@ -35,22 +35,6 @@ double functions::Rand_double(double min, double max){
     return num;
 }
 
-double functions::Max(double num1, double num2){
-    if(num1 > num2){
-        return num1;
-    }else{
-        return num2;
-    }
-}
-
-double functions::Min(double num1, double num2){
-    if(num1 < num2){
-        return num1;
-    }else{
-        return num2;
-    }
-}
-
 const vector<string> functions::split(const string& s, const char& c){
     string buff{""};
 	vector<string> v;
@@ -141,13 +125,13 @@ void functions::WriteSimulationFile(int idIteration, int iterator, string inputF
     while(!input.eof()){
         getline(input, line);
         if(count == 92){
-            output << "    " << TOTAL_CELLS << "*" << simulationFile.porosity[0][0] << " /"  << endl;
+            output << "    " << TOTAL_CELLS << "*" << sCandidate.porosity[0][0] << " /"  << endl;
         }else if(count == 96){
-            output << "    " << "100*" << simulationFile.permeability[0][0].permeability_1 << " 100*" << simulationFile.permeability[0][0].permeability_2 << " 100*" << simulationFile.permeability[0][0].permeability_3 << " /" << endl;
+            output << "    " << "100*" << sCandidate.permeability[0][0].permeability_1 << " 100*" << sCandidate.permeability[0][0].permeability_2 << " 100*" << sCandidate.permeability[0][0].permeability_3 << " /" << endl;
         }else if(count == 100){
-            output << "    " << "100*" << simulationFile.permeability[0][0].permeability_1 << " 100*" << simulationFile.permeability[0][0].permeability_2 << " 100*" << simulationFile.permeability[0][0].permeability_3 << " /"  << endl;
+            output << "    " << "100*" << sCandidate.permeability[0][0].permeability_1 << " 100*" << sCandidate.permeability[0][0].permeability_2 << " 100*" << sCandidate.permeability[0][0].permeability_3 << " /"  << endl;
         }else if(count == 105){
-            output << "    " << "100*" << simulationFile.permeability[0][0].permeability_1 << " 100*" << simulationFile.permeability[0][0].permeability_2 << " 100*" << simulationFile.permeability[0][0].permeability_3 << " /"  << endl;
+            output << "    " << "100*" << sCandidate.permeability[0][0].permeability_1 << " 100*" << sCandidate.permeability[0][0].permeability_2 << " 100*" << sCandidate.permeability[0][0].permeability_3 << " /"  << endl;
         }else{
             output << line << endl;
         }

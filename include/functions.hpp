@@ -15,8 +15,6 @@ class functions{
 
     void Simulation(int idIteration, int size, string file);
     double Rand_double(double min, double max);
-    double Max(double num1, double num2);
-    double Min(double num1, double num2);
     const vector<string> split(const string& s, const char& c);
     void CreateOutputDir();
     string ReadFileInput(string file);
@@ -26,9 +24,5 @@ class functions{
     void WriteSimulationFile(int idIteration, int interator, string inputFile, string file, individual sCandidate);
     void WriteErrorFile(int idIteration, individual sCandidate);
     double activationFunction(string waterResult, string oilResult, string gasResult, vector<result> results, int idIteration, int iterator);
-
-    static bool Compare(const individual n, const individual m){
-        return n.error_rank < m.error_rank;
-    }
 
 };
