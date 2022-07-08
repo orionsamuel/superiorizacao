@@ -34,5 +34,6 @@ class tabu_search: public functions{
     void SaveTabuList();
     void SaveBest();
     void Superiorization(individual image);
+    double ProximityFunction(individual image);
 
 };
