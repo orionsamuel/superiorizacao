@@ -34,7 +34,7 @@ for line in inputFile_RealGas:
 
 inputFile_RealGas.close()
 
-for i in range(11): 
+for i in range(8): 
     water = []
     water2 = []
     oil = []

@@ -94,16 +94,16 @@ PORO
 
 PERMX
 -- The layers have perm. 500mD, 50mD and 200mD, respectively.
-    100*89.85 100*263.83 100*240.83 /
+    100*412.29 100*111.38 100*214.9 /
 
 PERMY
 -- Equal to PERMX
-    100*89.85 100*263.83 100*240.83 /
+    100*412.29 100*111.38 100*214.9 /
 
 PERMZ
 -- Cannot find perm. in z-direction in Odeh's paper
 -- For the time being, we will assume PERMZ equal to PERMX and PERMY:
-    100*89.85 100*263.83 100*240.83 /
+    100*412.29 100*111.38 100*214.9 /
 ECHO
 
 PROPS

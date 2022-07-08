@@ -8,7 +8,7 @@ const string inputGas = "../Input/gas.txt";
 const string simulationFile = "../Input/SPE1CASE1.DATA";
 const string fileName = "SPE1CASE1";
 
-#define N_ITERATIONS 10
+#define N_ITERATIONS 20
 #define STOP 80
 
 #define MIN_POROSITY 0.1
@@ -29,9 +29,9 @@ const string fileName = "SPE1CASE1";
 
 #define HEIGHT 30
 #define WIDTH 10
-#define SIZE 30
-#define TABU_SIZE 30
-#define SUPERIOZATION_SIZE 8
+#define SIZE 60
+#define TABU_SIZE 60
+#define SUPERIOZATION_SIZE 16
 
 struct perm{
     double permeability_1;
