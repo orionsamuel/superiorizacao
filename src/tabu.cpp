@@ -182,6 +182,8 @@ void tabu_search::Superiorization(individual image){
             nextImage.error_rank = image.error_rank;
 
             nextImage.proximity = ProximityFunction(nextImage);
+            image.proximity = ProximityFunction(image);
+            cout << nextImage.proximity << " " << image.proximity << endl;
 
             if(nextImage.proximity <= image.proximity){
                 n++;
