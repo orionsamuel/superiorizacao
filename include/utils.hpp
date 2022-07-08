@@ -8,7 +8,7 @@ const string inputGas = "../Input/gas.txt";
 const string simulationFile = "../Input/SPE1CASE1.DATA";
 const string fileName = "SPE1CASE1";
 
-#define N_ITERATIONS 3
+#define N_ITERATIONS 10
 #define STOP 80
 
 #define MIN_POROSITY 0.1
@@ -29,7 +29,7 @@ const string fileName = "SPE1CASE1";
 
 #define HEIGHT 30
 #define WIDTH 10
-#define SIZE 10
+#define SIZE 30
 #define TABU_SIZE 30
 #define SUPERIOZATION_SIZE 8
 
