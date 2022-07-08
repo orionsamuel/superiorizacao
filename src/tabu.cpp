@@ -29,6 +29,10 @@ void tabu_search::FirstSimulation(){
     this->tabuList.push_back(sBest);
 
     this->bestCandidate = sBest;
+
+    this->bestCandidate.proximity = ProximityFunction(this->bestCandidate);
+
+    Superiorization(this->bestCandidate);
 }
 
 void tabu_search::OthersSimulations(int idIteration){
@@ -56,6 +60,10 @@ void tabu_search::OthersSimulations(int idIteration){
             this->bestCandidate = sNeighborhood[i];
         }
     }
+
+    this->bestCandidate.proximity = ProximityFunction(this->bestCandidate);
+
+    Superiorization(this->bestCandidate);
 
     if(this->bestCandidate.error_rank < this->sBest.error_rank){
         this->sBest = this->bestCandidate;
@@ -152,6 +160,89 @@ void tabu_search::SaveBest(){
     WriteErrorFile(N_ITERATIONS+2, this->sBest);
 }
 
+void tabu_search::Superiorization(individual image){
+    int n = 0;
+    while (n < SUPERIOZATION_SIZE){
+        cout << "Iteração " << n << " do método de superiorização" << endl;
+        bool loop = true;
+        while(loop){
+            this->l = this->l + 1;
+            double beta = pow(a, l);
+            individual nextImage;
+
+            for(int i = 0; i < HEIGHT; i++){
+                for(int j = 0; j < WIDTH; j++){
+                    nextImage.porosity[i][j] = Min(image.porosity[i][j] + beta * suavityImage[i][j], MAX_POROSITY);
+                    nextImage.permeability[i][j].permeability_1 = Min(image.permeability[i][j].permeability_1 + beta * suavityImage[i][j], MAX_PERMEABILITY);
+                    nextImage.permeability[i][j].permeability_2 = Min(image.permeability[i][j].permeability_2 + beta * suavityImage[i][j], MAX_PERMEABILITY);
+                    nextImage.permeability[i][j].permeability_3 = Min(image.permeability[i][j].permeability_3 + beta * suavityImage[i][j], MAX_PERMEABILITY);
+                }
+            }
+
+            nextImage.error_rank = image.error_rank;
+
+            nextImage.proximity = ProximityFunction(nextImage);
+            image.proximity = ProximityFunction(image);
+
+            if(nextImage.proximity <= image.proximity){
+                n++;
+                image = nextImage;
+                loop = false;
+            }
+        }
+        this->bestCandidate = image;
+    }
+    
+}
+
+double tabu_search::ProximityFunction(individual image){
+    double proximity;
+    double proximityPorosity;
+    double proximityPermeability_1;
+    double proximityPermeability_2;
+    double proximityPermeability_3;
+
+    for(int i = 0; i < 4; i++){
+        if(i == 0){
+            for(int j = 0; j < HEIGHT; j++){
+                for(int k = 0; k < WIDTH; k++){
+                    proximityPorosity += pow((image.porosity[j][k] - suavityImage[j][k]),2);
+                }
+            }
+
+            proximityPorosity = sqrt(proximityPorosity);
+        }if(i == 1){
+            for(int j = 0; j < HEIGHT; j++){
+                for(int k = 0; k < WIDTH; k++){
+                    proximityPermeability_1 += pow((image.permeability[j][k].permeability_1 - suavityImage[j][k]),2);
+                }
+            }
+
+            proximityPermeability_1 = sqrt(proximityPermeability_1);
+        }if(i == 2){
+            for(int j = 0; j < HEIGHT; j++){
+                for(int k = 0; k < WIDTH; k++){
+                    proximityPermeability_2 += pow((image.permeability[j][k].permeability_2 - suavityImage[j][k]),2);
+                }
+            }
+
+            proximityPermeability_2 = sqrt(proximityPermeability_2);
+        }else{
+            for(int j = 0; j < HEIGHT; j++){
+                for(int k = 0; k < WIDTH; k++){
+                    proximityPermeability_3 += pow((image.permeability[j][k].permeability_3 - suavityImage[j][k]),2);
+                }
+            }
+
+            proximityPermeability_3 = sqrt(proximityPermeability_3);
+        }
+    }
+
+    proximity = (proximityPorosity + proximityPermeability_1 + proximityPermeability_2 + proximityPermeability_3) / 4;
+
+    return proximity;
+}
+
 void tabu_search::Init(){
     CreateOutputDir();
 
@@ -160,6 +251,12 @@ void tabu_search::Init(){
     string gasInputResult = ReadFileInput(inputGas);
 
     this->realResults = ConvertStringInputToDoubleResult(waterInputResult, oilInputResult, gasInputResult); 
+
+    for(int i = 0; i < HEIGHT; i++){
+        for(int j = 0; j < WIDTH; j++){
+            this->suavityImage[i][j] = 5;
+        }
+    }
 
     FirstSimulation();
     int count = 1;

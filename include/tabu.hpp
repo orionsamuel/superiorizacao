@@ -22,6 +22,7 @@ class tabu_search: public functions{
     vector<individual> tabuList;
     individual sNeighborhood[SIZE];
     vector<result> realResults;
+    int l = -1;
 
     public:
     void Init();
@@ -32,5 +33,7 @@ class tabu_search: public functions{
     bool Contains(individual sCandidate);
     void SaveTabuList();
     void SaveBest();
+    void Superiorization(individual image);
+    double ProximityFunction(individual image);
 
 };
